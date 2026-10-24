@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnipURL | Long links, snipped short</title>
+    <meta name="description" content="SnipURL turns long, messy URLs into short links you can share anywhere.">
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@200;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/ui/styles.css?v=3">
+    <script src="/ui/config.js?v=3"></script>
+</head>
+<body>
+    <div class="min-h-screen bg-black text-white font-inter relative overflow-x-hidden">
+
+        <!-- Global Background -->
+        <div class="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
+            <div class="absolute inset-0 bg-gradient-to-b from-[#1a0505] to-black"></div>
+            <div class="absolute top-0 left-0 w-[1px] h-[1px] bg-transparent stars-1 animate-[animStar_50s_linear_infinite]"></div>
+            <div class="absolute top-0 left-0 w-[2px] h-[2px] bg-transparent stars-2 animate-[animStar_80s_linear_infinite]"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] max-w-[100vw] h-[800px] bg-red-600/5 rounded-full blur-[120px]"></div>
+            <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(circle_at_center,black_40%,transparent_80%)]"></div>
+        </div>
+
+        <div class="gradient-blur" aria-hidden="true"></div>
+
+        <!-- Navbar -->
+        <header class="fixed top-0 left-0 w-full z-50 pt-6 px-4">
+            <nav class="max-w-5xl mx-auto flex items-center justify-between bg-black/60 backdrop-blur-xl border border-white/10 rounded-full pl-6 pr-3 py-3 shadow-2xl" aria-label="Main">
+                <a href="#top" class="flex items-center gap-2">
+                    <div class="w-5 h-5 bg-[#ef233c] rounded-sm rotate-45 flex items-center justify-center">
+                        <div class="w-2 h-2 bg-black rounded-[1px]"></div>
+                    </div>
+                    <span class="text-lg font-bold font-manrope tracking-tight">Snip<span class="text-[#ef233c]">URL</span></span>
+                </a>
+
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#features" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors">Features</a>
+                    <a href="#how" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors">How it works</a>
+                    <a href="#pricing" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors">Pricing</a>
+                    <a href="#" data-api-docs target="_blank" rel="noopener" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors">API</a>
+                </div>
+
+                <button type="button" data-get-started class="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-white/5 px-6 py-2 transition-transform active:scale-95">
+                    <span class="absolute inset-0 border border-white/10 rounded-full"></span>
+                    <span class="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#ef233c_100%)] opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                    <span class="absolute inset-[1px] rounded-full bg-black"></span>
+                    <span class="relative z-10 flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
+                        Get Started <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-0.5 transition-transform"></iconify-icon>
+                    </span>
+                </button>
+            </nav>
+        </header>
+
+        <main id="top" class="relative z-10">
+            <!-- Hero -->
+            <section class="min-h-screen flex flex-col items-center justify-center pt-36 pb-16 px-4 sm:px-6">
+                <div class="text-center max-w-5xl mx-auto">
+                    <a href="#" data-api-docs target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 animate-fade-up hover:border-white/20 transition-colors" style="animation-delay: 0.1s;">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-[#ef233c]"></span>
+                        </span>
+                        <span class="text-xs font-medium text-red-100/90 tracking-wide font-manrope">SnipURL API v0.1 is live</span>
+                        <iconify-icon icon="lucide:arrow-right" class="text-red-400 text-xs"></iconify-icon>
+                    </a>
+
+                    <h1 class="text-5xl sm:text-6xl md:text-8xl font-semibold tracking-tighter font-manrope leading-[1.1] mb-8 animate-fade-up" style="animation-delay: 0.2s;">
+                        <span class="block text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/40 pb-1">Long links,</span>
+                        <span class="block text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/40 pb-2">
+                            <span class="text-[#ef233c] inline-block relative">
+                                Snipped
+                                <svg class="absolute w-full h-3 -bottom-2 left-0 text-[#ef233c] opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true">
+                                    <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="2" fill="none" />
+                                </svg>
+                            </span> short.
+                        </span>
+                    </h1>
+
+                    <p class="text-lg sm:text-xl md:text-2xl text-zinc-400 max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-up" style="animation-delay: 0.3s;">
+                        Paste any messy, mile-long URL and get a clean short link in milliseconds. Track clicks, share anywhere, ship faster.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 animate-fade-up" style="animation-delay: 0.4s;">
+                        <button type="button" data-get-started class="shiny-cta group">
+                            <span class="relative z-10 flex items-center gap-2 text-white font-medium">
+                                Get Started — it's free <iconify-icon icon="lucide:arrow-right" class="transition-transform group-hover:translate-x-1"></iconify-icon>
+                            </span>
+                        </button>
+
+                        <a href="#" data-api-docs target="_blank" rel="noopener" class="group px-8 py-4 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 font-medium hover:text-white hover:bg-zinc-800 transition-all flex items-center gap-2">
+                            <iconify-icon icon="lucide:terminal" class="text-lg"></iconify-icon>
+                            View API Docs
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Stat strip -->
+                <div class="w-full mt-24 border-y border-white/5 bg-white/[0.02] backdrop-blur-sm py-10 animate-fade-up" style="animation-delay: 0.5s;">
+                    <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                        <div>
+                            <div class="text-3xl md:text-4xl font-bold font-manrope">&lt;50<span class="text-[#ef233c]">ms</span></div>
+                            <div class="mt-1 text-xs font-bold tracking-widest text-zinc-500 uppercase">Snip time</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl md:text-4xl font-bold font-manrope">62<span class="text-[#ef233c]">^n</span></div>
+                            <div class="mt-1 text-xs font-bold tracking-widest text-zinc-500 uppercase">Base62 codes</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl md:text-4xl font-bold font-manrope">1<span class="text-[#ef233c]">-click</span></div>
+                            <div class="mt-1 text-xs font-bold tracking-widest text-zinc-500 uppercase">Copy &amp; share</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl md:text-4xl font-bold font-manrope">REST<span class="text-[#ef233c]">.</span></div>
+                            <div class="mt-1 text-xs font-bold tracking-widest text-zinc-500 uppercase">API-first</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Shortener -->
+            <section id="shorten" class="py-24 px-4 sm:px-6 scroll-mt-24">
+                <div class="max-w-3xl mx-auto reveal">
+                    <div class="text-center mb-10">
+                        <p class="text-xs font-bold text-[#ef233c] uppercase tracking-widest mb-4">The Snipper</p>
+                        <h2 class="text-4xl md:text-5xl font-semibold tracking-tight font-manrope">Paste. Snip. <span class="text-[#ef233c]">Share.</span></h2>
+                    </div>
+
+                    <div class="relative rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900/70 to-black/80 backdrop-blur-xl p-4 sm:p-8 shadow-[0_0_60px_rgba(239,35,60,0.08)]">
+                        <form id="snip-form" class="flex flex-col sm:flex-row gap-3" novalidate>
+                            <label for="snip-input" class="sr-only">Long URL</label>
+                            <div id="snip-field" class="snip-field flex-1 flex items-center gap-3 rounded-full bg-white/5 border border-white/10 px-5 transition-all">
+                                <iconify-icon icon="lucide:link" class="text-zinc-500 text-lg shrink-0"></iconify-icon>
+                                <input id="snip-input" name="url" type="text" inputmode="url" autocomplete="off" spellcheck="false"
+                                    placeholder="https://your-very-long-link.com/goes/here?utm=..."
+                                    class="w-full min-w-0 bg-transparent py-4 text-white placeholder:text-zinc-600 focus:outline-none"
+                                    aria-describedby="snip-error">
+                            </div>
+                            <button id="snip-submit" type="submit" class="inline-flex items-center justify-center gap-2 bg-[#ef233c] hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-full px-8 py-4 transition-all active:scale-95 shadow-[0_0_30px_rgba(239,35,60,0.3)]">
+                                <span id="snip-submit-label">Snip it</span>
+                                <iconify-icon id="snip-submit-icon" icon="lucide:scissors"></iconify-icon>
+                                <span id="snip-spinner" class="spinner hidden" aria-hidden="true"></span>
+                            </button>
+                        </form>
+
+                        <p id="snip-error" class="hidden mt-4 flex items-center gap-2 text-sm text-red-300" role="alert"></p>
+
+                        <!-- Result -->
+                        <div id="snip-result" class="hidden mt-6 rounded-2xl border border-[#ef233c]/40 bg-[#ef233c]/[0.06] p-5 animate-pop" aria-live="polite">
+                            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#ef233c] mb-3">
+                                <iconify-icon icon="lucide:check-circle-2"></iconify-icon> Snipped
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center gap-4">
+                                <div class="min-w-0 flex-1">
+                                    <a id="result-short" href="#" target="_blank" rel="noopener" class="block text-2xl font-bold font-manrope text-white hover:text-[#ef233c] transition-colors truncate"></a>
+                                    <p id="result-long" class="mt-1 text-sm text-zinc-500 truncate"></p>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <button type="button" id="result-copy" class="inline-flex items-center gap-2 rounded-full bg-white text-black font-semibold text-sm px-5 py-2.5 hover:bg-zinc-200 transition-colors active:scale-95">
+                                        <iconify-icon icon="lucide:copy"></iconify-icon> <span>Copy</span>
+                                    </button>
+                                    <a id="result-open" href="#" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-colors" title="Open short link" aria-label="Open short link">
+                                        <iconify-icon icon="lucide:external-link"></iconify-icon>
+                                    </a>
+                                    <button type="button" id="result-stats" class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-colors" title="View stats" aria-label="View stats">
+                                        <iconify-icon icon="lucide:bar-chart-3"></iconify-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="result-stats-panel" class="hidden mt-4 pt-4 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm"></div>
+                        </div>
+
+                        <!-- Recent links -->
+                        <div id="recent-wrap" class="hidden mt-8">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-500">Your recent snips</h3>
+                                <button type="button" id="recent-clear" class="text-xs text-zinc-500 hover:text-white transition-colors">Clear all</button>
+                            </div>
+                            <ul id="recent-list" class="divide-y divide-white/5 rounded-2xl border border-white/10 bg-black/40 overflow-hidden"></ul>
+                        </div>
+                    </div>
+
+                    <p class="mt-4 text-center text-xs text-zinc-600">Links on this demo are stored in memory and reset when the API restarts.</p>
+                </div>
+            </section>
+
+            <!-- Features -->
+            <section id="features" class="py-32 px-4 sm:px-6 scroll-mt-24">
+                <div class="max-w-7xl mx-auto">
+                    <div class="mb-20 text-center max-w-3xl mx-auto reveal">
+                        <h2 class="text-4xl md:text-5xl font-semibold text-white tracking-tight font-manrope mb-6">
+                            Everything a link needs. <br class="hidden sm:block">
+                            <span class="text-[#ef233c]">Nothing it doesn't.</span>
+                        </h2>
+                        <p class="text-lg text-zinc-400 font-light">A tiny, fast core with the guardrails production traffic demands.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:auto-rows-[minmax(240px,auto)]">
+                        <!-- Main card -->
+                        <div class="lg:col-span-2 lg:row-span-2 group relative overflow-hidden p-8 border border-white/10 bg-gradient-to-b from-zinc-900/50 to-black hover:border-white/20 transition-all rounded-xl reveal">
+                            <div class="relative z-10 h-full flex flex-col">
+                                <div class="mb-6 inline-flex self-start p-3 rounded-lg bg-white/5 border border-white/10 text-[#ef233c]">
+                                    <iconify-icon icon="lucide:scissors" class="text-2xl"></iconify-icon>
+                                </div>
+                                <h3 class="text-3xl font-semibold text-white font-manrope mb-4 tracking-tight">Instant Snips</h3>
+                                <p class="text-zinc-400 text-lg leading-relaxed">Every link gets a compact base62 code the moment you hit enter. No sign-up wall, no waiting room — just a short link that redirects instantly.</p>
+
+                                <div class="mt-8 rounded-xl border border-white/10 bg-black/60 p-5 font-mono text-sm">
+                                    <div class="flex items-center gap-2 text-zinc-500 truncate">
+                                        <iconify-icon icon="lucide:link" class="shrink-0"></iconify-icon>
+                                        <span class="truncate">https://store.example.com/collections/summer/products/linen-shirt?ref=newsletter&amp;utm_source=email</span>
+                                    </div>
+                                    <div class="my-3 flex items-center gap-2 text-[#ef233c] text-xs">
+                                        <span class="h-px flex-1 bg-gradient-to-r from-transparent to-[#ef233c]/60"></span>
+                                        <iconify-icon icon="lucide:arrow-down"></iconify-icon>
+                                        <span class="h-px flex-1 bg-gradient-to-l from-transparent to-[#ef233c]/60"></span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-white">
+                                        <iconify-icon icon="lucide:sparkles" class="text-[#ef233c]"></iconify-icon>
+                                        snip.url/<span class="text-[#ef233c]">aZ9</span>
+                                    </div>
+                                </div>
+
+                                <button type="button" data-get-started class="mt-auto pt-8 flex items-center justify-between text-left opacity-70 group-hover:opacity-100 transition-opacity">
+                                    <span class="text-xs font-mono text-[#ef233c]">TRY IT NOW</span>
+                                    <iconify-icon icon="lucide:arrow-right" class="text-[#ef233c]"></iconify-icon>
+                                </button>
+                            </div>
+                            <div class="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none" style="background: radial-gradient(circle at top right, #ef233c, transparent 70%);"></div>
+                        </div>
+
+                        <!-- API-first -->
+                        <div class="lg:col-span-2 group relative overflow-hidden p-8 border border-white/10 bg-black hover:border-white/20 transition-all rounded-xl reveal">
+                            <div class="relative z-10 flex flex-col h-full">
+                                <div class="mb-4 inline-flex self-start p-3 rounded-lg bg-white/5 border border-white/10 text-blue-400">
+                                    <iconify-icon icon="lucide:code-2" class="text-2xl"></iconify-icon>
+                                </div>
+                                <h3 class="text-2xl font-semibold text-white font-manrope mb-2">API-first</h3>
+                                <p class="text-zinc-400 mb-5">One POST, one short link. Drop it into scripts, CI pipelines or your own product.</p>
+                                <pre class="mt-auto overflow-x-auto rounded-lg border border-white/10 bg-zinc-950 p-4 text-xs leading-relaxed font-mono text-zinc-300"><span class="text-[#ef233c]">curl</span> -X POST <span id="curl-base">http://127.0.0.1:8000</span>/shorten \
+  -H <span class="text-emerald-400">"X-API-Key: dev-key"</span> \
+  -H <span class="text-emerald-400">"Content-Type: application/json"</span> \
+  -d <span class="text-emerald-400">'{"url": "https://example.com"}'</span></pre>
+                            </div>
+                            <div class="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none" style="background: radial-gradient(circle at top right, #3b82f6, transparent 70%);"></div>
+                        </div>
+
+                        <!-- Analytics -->
+                        <div class="group relative overflow-hidden p-8 border border-white/10 bg-black hover:border-white/20 transition-all rounded-xl reveal">
+                            <div class="mb-4 inline-flex p-3 rounded-lg bg-white/5 border border-white/10 text-yellow-400">
+                                <iconify-icon icon="lucide:bar-chart-3" class="text-2xl"></iconify-icon>
+                            </div>
+                            <h3 class="text-xl font-semibold text-white font-manrope mb-2">Click Analytics</h3>
+                            <p class="text-sm text-zinc-400">See where every snip goes and how often it's opened.</p>
+                        </div>
+
+                        <!-- Security -->
+                        <div class="group relative overflow-hidden p-8 border border-white/10 bg-black hover:border-white/20 transition-all rounded-xl reveal">
+                            <div class="mb-4 inline-flex p-3 rounded-lg bg-white/5 border border-white/10 text-purple-400">
+                                <iconify-icon icon="lucide:shield-check" class="text-2xl"></iconify-icon>
+                            </div>
+                            <h3 class="text-xl font-semibold text-white font-manrope mb-2">Guardrails Built In</h3>
+                            <p class="text-sm text-zinc-400">API-key auth and sliding-window rate limits keep abuse out.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How it works -->
+            <section id="how" class="py-24 px-4 sm:px-6 scroll-mt-24 border-t border-white/5">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-16 reveal">
+                        <p class="text-xs font-bold text-[#ef233c] uppercase tracking-widest mb-4">How it works</p>
+                        <h2 class="text-4xl md:text-5xl font-semibold font-manrope tracking-tight">Three steps. Zero friction.</h2>
+                    </div>
+                    <ol class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <li class="relative p-8 rounded-xl border border-white/10 bg-zinc-950/60 reveal">
+                            <span class="absolute top-6 right-6 text-6xl font-bold font-manrope text-stroke select-none" aria-hidden="true">01</span>
+                            <iconify-icon icon="lucide:clipboard-paste" class="text-3xl text-[#ef233c]"></iconify-icon>
+                            <h3 class="mt-6 text-xl font-semibold font-manrope">Paste</h3>
+                            <p class="mt-2 text-sm text-zinc-400">Drop in any long URL — tracking params and all.</p>
+                        </li>
+                        <li class="relative p-8 rounded-xl border border-white/10 bg-zinc-950/60 reveal">
+                            <span class="absolute top-6 right-6 text-6xl font-bold font-manrope text-stroke select-none" aria-hidden="true">02</span>
+                            <iconify-icon icon="lucide:scissors" class="text-3xl text-[#ef233c]"></iconify-icon>
+                            <h3 class="mt-6 text-xl font-semibold font-manrope">Snip</h3>
+                            <p class="mt-2 text-sm text-zinc-400">We mint a unique base62 code and store the mapping.</p>
+                        </li>
+                        <li class="relative p-8 rounded-xl border border-white/10 bg-zinc-950/60 reveal">
+                            <span class="absolute top-6 right-6 text-6xl font-bold font-manrope text-stroke select-none" aria-hidden="true">03</span>
+                            <iconify-icon icon="lucide:send" class="text-3xl text-[#ef233c]"></iconify-icon>
+                            <h3 class="mt-6 text-xl font-semibold font-manrope">Share</h3>
+                            <p class="mt-2 text-sm text-zinc-400">Copy with one click. Every visit redirects instantly.</p>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Testimonial -->
+            <div class="w-full bg-[#ef233c] py-20 px-6">
+                <div class="max-w-4xl mx-auto text-center">
+                    <div class="flex justify-center gap-1 text-black text-2xl mb-6" aria-label="5 out of 5 stars">
+                        <iconify-icon icon="ph:star-fill"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill"></iconify-icon>
+                    </div>
+                    <blockquote class="text-3xl md:text-5xl font-bold text-black font-manrope leading-tight mb-8">
+                        "Our campaign links went from ugly 200-character monsters to something people actually click."
+                    </blockquote>
+                    <div class="flex items-center justify-center gap-4">
+                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center">
+                            <iconify-icon icon="lucide:user" class="text-white text-xl"></iconify-icon>
+                        </div>
+                        <div class="text-left">
+                            <div class="text-black font-bold text-lg">Growth Lead</div>
+                            <div class="text-black/70 font-medium">Early SnipURL user</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing -->
+            <section id="pricing" class="py-32 px-4 sm:px-6 bg-black relative border-t border-white/5 scroll-mt-24">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center mb-20 reveal">
+                        <h2 class="text-4xl md:text-5xl font-semibold text-white font-manrope mb-4">Simple, Transparent Pricing</h2>
+                        <p class="text-zinc-400">Start snipping for free. Scale when your links do.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+                        <div class="p-8 border border-zinc-800 bg-black hover:border-zinc-700 transition-all rounded-xl flex flex-col reveal">
+                            <h3 class="text-xl font-bold font-manrope mb-2">Free</h3>
+                            <p class="text-zinc-500 text-sm mb-8 min-h-[2.5rem]">For individuals who just need a shorter link.</p>
+                            <div class="mb-8 flex items-baseline gap-1">
+                                <span class="text-zinc-500">$</span><span class="text-5xl font-bold">0</span><span class="text-zinc-500 text-sm">/mo</span>
+                            </div>
+                            <ul class="space-y-4 mb-8 flex-1">
+                                <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> 10 snips / minute</li>
+                                <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Instant redirects</li>
+                                <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Basic click counts</li>
+                            </ul>
+                            <button type="button" data-get-started class="w-full py-3 px-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-lg text-sm font-bold uppercase tracking-wider transition-all">Get Started</button>
+                        </div>
+
+                        <div class="relative p-8 border border-[#ef233c] bg-zinc-900/40 shadow-[0_0_30px_rgba(239,35,60,0.1)] rounded-xl flex flex-col md:scale-105 z-10 reveal">
+                            <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#ef233c] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">Most popular</div>
+                            <h3 class="text-xl font-bold font-manrope mb-2">Pro</h3>
+                            <p class="text-zinc-400 text-sm mb-8 min-h-[2.5rem]">For creators and marketers sharing links daily.</p>
+                            <div class="mb-8 flex items-baseline gap-1">
+                                <span class="text-zinc-500">$</span><span class="text-5xl font-bold">9</span><span class="text-zinc-500 text-sm">/mo</span>
+                            </div>
+                            <ul class="space-y-4 mb-8 flex-1">
+                                <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Unlimited snips</li>
+                                <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Custom back-halves</li>
+                                <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Detailed analytics</li>
+                                <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Priority support</li>
+                            </ul>
+                            <button type="button" data-get-started class="w-full py-3 px-4 bg-[#ef233c] hover:bg-red-700 text-white rounded-lg text-sm font-bold uppercase tracking-wider transition-all">Go Pro</button>
+                        </div>
+
+                        <div class="p-8 border border-zinc-800 bg-black hover:border-zinc-700 transition-all rounded-xl flex flex-col reveal">
+                            <h3 class="text-xl font-bold font-manrope mb-2">Team</h3>
+                            <p class="text-zinc-500 text-sm mb-8 min-h-[2.5rem]">For teams running links through the API at scale.</p>
+                            <div class="mb-8 flex items-baseline gap-1">
+                                <span class="text-zinc-500">$</span><span class="text-5xl font-bold">49</span><span class="text-zinc-500 text-sm">/mo</span>
+                            </div>
+                            <ul class="space-y-4 mb-8 flex-1">
+                                <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Multiple API keys</li>
+                                <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Custom domains</li>
+                                <li class="flex items-center gap-3 text-sm text-zinc-300"><iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon> Higher rate limits &amp; SSO</li>
+                            </ul>
+                            <a href="mailto:hello@example.com" class="w-full text-center py-3 px-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-lg text-sm font-bold uppercase tracking-wider transition-all">Contact Sales</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Final CTA -->
+            <section class="py-32 px-4 sm:px-6 text-center bg-zinc-950/40">
+                <div class="max-w-3xl mx-auto reveal">
+                    <h2 class="text-5xl md:text-7xl font-bold font-manrope mb-8 tracking-tighter">Ready to <span class="text-[#ef233c]">Snip?</span></h2>
+                    <p class="text-xl text-zinc-400 mb-12">Your first short link is one paste away.</p>
+
+                    <form id="cta-form" class="max-w-xl mx-auto flex flex-col sm:flex-row gap-4" novalidate>
+                        <label for="cta-input" class="sr-only">Long URL</label>
+                        <input id="cta-input" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="Paste a long URL" class="flex-1 min-w-0 bg-white/5 border border-white/10 rounded-full px-6 py-4 text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#ef233c] transition-all">
+                        <button type="submit" class="bg-[#ef233c] hover:bg-red-700 text-white font-bold rounded-full px-8 py-4 transition-all active:scale-95">Snip it</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="relative z-10 bg-black border-t border-zinc-900 pt-20 pb-10 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-24">
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-5 h-5 bg-[#ef233c] rounded-sm rotate-45 flex items-center justify-center">
+                            <div class="w-2 h-2 bg-black rounded-[1px]"></div>
+                        </div>
+                        <span class="text-2xl font-bold font-manrope tracking-tight">Snip<span class="text-[#ef233c]">URL</span></span>
+                    </div>
+                    <p class="text-zinc-500 max-w-xs leading-relaxed">Short links for long ideas. A tiny, fast URL shortener built on FastAPI.</p>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-[#ef233c] uppercase tracking-widest mb-6">Product</h4>
+                    <ul class="space-y-4 text-zinc-400 text-sm">
+                        <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#how" class="hover:text-white transition-colors">How it works</a></li>
+                        <li><a href="#pricing" class="hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="#" data-api-docs target="_blank" rel="noopener" class="hover:text-white transition-colors">API Docs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-[#ef233c] uppercase tracking-widest mb-6">Company</h4>
+                    <ul class="space-y-4 text-zinc-400 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">About</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex justify-center items-center py-10 opacity-20 pointer-events-none" aria-hidden="true">
+                <span class="text-[17vw] leading-none font-bold font-manrope tracking-tighter text-stroke select-none">SNIPURL</span>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-6 border-t border-zinc-900 pt-8 flex flex-col md:flex-row items-center justify-between text-zinc-600 text-[10px] uppercase tracking-widest">
+                <p>&copy; <span id="year">2026</span> SnipURL. All rights reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-zinc-400">Twitter</a>
+                    <a href="#" class="hover:text-zinc-400">LinkedIn</a>
+                    <a href="#" class="hover:text-zinc-400">GitHub</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast flex items-center gap-2 rounded-full border border-white/10 bg-zinc-900/95 backdrop-blur-xl px-5 py-3 text-sm shadow-2xl" role="status" aria-live="polite">
+        <iconify-icon icon="lucide:check" class="text-[#ef233c]"></iconify-icon>
+        <span id="toast-text">Copied</span>
+    </div>
+
+    <script src="/ui/app.js?v=3"></script>
+</body>
+</html>

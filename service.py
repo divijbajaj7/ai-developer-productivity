@@ -1,17 +1,25 @@
 import string
+from collections import deque
 
 ALPHABET = string.ascii_lowercase + string.ascii_uppercase + string.digits  # 62 characters
 
 
+VISIT_LOG = deque(maxlen=1000)  # bounded default log; oldest visits drop off
+
+
 def encode_base62(num):
+    if num == 0:
+        return ALPHABET[0]
     out = ""
     while num > 0:
         out = ALPHABET[num % 62] + out
         num //= 62
-    return out  # BUG: encode_base62(0) returns "" instead of a valid one-character code
+    return out
 
 
-def record_visit(code, log=[]):  # BUG: mutable default argument is shared across all calls
+def record_visit(code, log=None):
+    if log is None:
+        log = VISIT_LOG
     log.append(code)
     return log
 
