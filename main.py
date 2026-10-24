@@ -1,5 +1,8 @@
+from pathlib import Path
+
 from fastapi import Depends, FastAPI
-from fastapi.responses import RedirectResponse
+from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 from auth import require_api_key
 from models import ShortenRequest, ShortenResponse, StatsResponse
@@ -7,12 +10,21 @@ from ratelimit import RateLimiter, rate_limit
 from storage import Storage
 from service import shorten, record_visit
 
+BASE_DIR = Path(__file__).resolve().parent
+STATIC_DIR = BASE_DIR / "static"
+
 app = FastAPI(title="SnipURL", version="0.1.0")
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 store = Storage()
 
 shorten_limiter = RateLimiter(limit=10, window_seconds=60)
 redirect_limiter = RateLimiter(limit=60, window_seconds=60)
 stats_limiter = RateLimiter(limit=30, window_seconds=60)
+
+
+@app.get("/", include_in_schema=False)
+def index():
+    return FileResponse(STATIC_DIR / "index.html")
 
 
 @app.post(
