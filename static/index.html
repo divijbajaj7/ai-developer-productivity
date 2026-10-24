@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SnipURL</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="hero">
+        <p class="eyebrow">URL shortener</p>
+        <h1>SnipURL</h1>
+      </header>
+
+      <section class="card">
+        <h2>Shorten a URL</h2>
+        <form id="shorten-form" class="stack">
+          <label>
+            API key
+            <input id="api-key" type="password" value="dev-key" placeholder="Enter API key" />
+          </label>
+          <label>
+            Long URL
+            <input id="long-url" type="url" placeholder="https://example.com" required />
+          </label>
+          <button type="submit">Create short link</button>
+        </form>
+        <div id="shorten-result" class="result hidden">
+          <p class="result-label">Short URL</p>
+          <div class="result-row">
+            <a id="short-url" href="#" target="_blank" rel="noreferrer"></a>
+            <button id="copy-link" type="button" class="secondary">Copy</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Check a link</h2>
+        <form id="stats-form" class="stack">
+          <label>
+            Code
+            <input id="stats-code" type="text" placeholder="abc123" required />
+          </label>
+          <button type="submit">View stats</button>
+        </form>
+        <div id="stats-result" class="result hidden">
+          <p class="result-label">Stats</p>
+          <ul>
+            <li><strong>Code:</strong> <span id="stats-code-value"></span></li>
+            <li><strong>Original URL:</strong> <a id="stats-long-url" href="#" target="_blank" rel="noreferrer"></a></li>
+            <li><strong>Clicks:</strong> <span id="stats-clicks"></span></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
